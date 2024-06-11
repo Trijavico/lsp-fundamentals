@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"log"
 	"os"
 
+	"github.com/Trijavico/first-lsp/lsp"
 	"github.com/Trijavico/first-lsp/rpc"
 )
 
@@ -16,18 +18,34 @@ func main(){
     scanner.Split(rpc.Split)
 
     for scanner.Scan() {
-        msg := scanner.Text()
-        handleMessage(msg)
+        msg := scanner.Bytes()
+        method, contents, err := rpc.DecodeMessage(msg)
+        if err != nil{
+            logger.Printf("Got an error %s\n", err)
+        }
+
+        handleMessage(logger, method, contents)
     }
 }
 
-func handleMessage(msg string){
+func handleMessage(logger *log.Logger, method string, contents []byte){
+    logger.Printf("Received method: %s\n", method)
+
+    switch method{
+    case "initialize":
+        var request lsp.InitializeRequest
+        if err := json.Unmarshal(contents, &request); err != nil{
+            log.Printf("Couldnt parse it correctly %s\n", err)
+        }
+
+        logger.Printf("Connected to: %s %s\n", request.Params.ClientInfo.Name, request.Params.ClientInfo.Version)
+    }
 }
 
 func getLogger(filename string) *log.Logger{
     logFile, err := os.OpenFile(filename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
     if err != nil{
-        log.Fatalf("Failed to open log file %s: %v", filename, err)
+        log.Fatalf("Failed to open log file %s: %v\n", filename, err)
     }
 
     return log.New(logFile, "[educationalps]", log.Ldate|log.Ltime|log.Lshortfile)
