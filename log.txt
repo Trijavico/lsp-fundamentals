@@ -1,3 +1,6 @@
-[educationalps]2024/06/11 11:43:04 main.go:15: Started!!
-[educationalps]2024/06/11 11:43:04 main.go:32: Received method: initialize
-[educationalps]2024/06/11 11:43:04 main.go:41: Connected to: Neovim 0.9.5
+[educationalps]2024/06/12 15:54:19 main.go:15: Started!!
+[educationalps]2024/06/12 15:54:19 main.go:32: Received method: initialize
+[educationalps]2024/06/12 15:54:19 main.go:41: Connected to: Neovim 0.9.5
+[educationalps]2024/06/12 15:54:19 main.go:54: Sent the reply!!
+[educationalps]2024/06/12 15:54:19 main.go:32: Received method: initialized
+[educationalps]2024/06/12 15:55:45 main.go:32: Received method: shutdown
